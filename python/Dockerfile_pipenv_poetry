@@ -1,0 +1,15 @@
+FROM python:3.9 as base2
+ENV TZ=Asia/Shanghai \
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    POETRY_HOME="/opt/poetry" \
+    POETRY_VIRTUALENVS_IN_PROJECT=true \
+    POETRY_NO_INTERACTION=1 \
+    PYSETUP_PATH="/opt/pysetup" \
+    VENV_PATH="/opt/pysetup/.venv"
+
+ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
+RUN curl -sSL https://install.python-poetry.org | python - --git https://github.com/python-poetry/poetry.git@master
+ENV PIPENV_VENV_IN_PROJECT=1
+RUN poetry plugin add poetry-exec-plugin && pip install pipenv -i https://pypi.tuna.tsinghua.edu.cn/simple
